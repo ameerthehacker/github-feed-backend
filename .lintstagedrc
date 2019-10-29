@@ -1,0 +1,10 @@
+{
+  "*.{js,json,md,yml}": [
+    "pretty-quick",
+    "git add"
+  ],
+  "*.{spec,js}": [
+    "yarn lint-staged-files",
+    "git add"
+  ],
+}
