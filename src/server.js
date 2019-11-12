@@ -2,6 +2,7 @@ const { gql, ApolloServer } = require('apollo-server');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
+const db = require('./services/db');
 
 // setup .env file if it exists
 const rootDir = path.resolve(__dirname, '..');
@@ -38,5 +39,18 @@ server
     port: process.env.PORT || 3000
   })
   .then(({ url }) => {
-    console.log(`Apollo server available @ ${url}`);
+    console.log(`INFO: apollo server available @ ${url}`);
+
+    db.getConnection()
+      .authenticate()
+      .then(() =>
+        console.info(
+          `INFO: connected to db '${db.database}' on host '${
+            db.host
+          }' as user '${db.username}' ${
+            db.usedPassword ? 'with' : 'without'
+          } password`
+        )
+      )
+      .error((err) => console.error(`ERROR: unable to connect to db ${err}`));
   });
